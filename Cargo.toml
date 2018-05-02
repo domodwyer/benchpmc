@@ -1,0 +1,23 @@
+[package]
+name = "benchpmc"
+version = "1.0.0"
+authors = ["Dom Dwyer <dom@itsallbroken.com>"]
+
+license = "BSD-3-Clause"
+readme = "README.md"
+keywords = ["pmc", "freebsd", "benchmark"]
+repository = "https://github.com/domodwyer/benchpmc"
+homepage = "https://github.com/domodwyer/benchpmc"
+description = """
+Black box benchmark runner for CPU micro-architecture events using Performance Monitor Counters.
+"""
+categories = ["command-line-utilities"]
+
+[dependencies]
+clap = "2.31.*"
+separator = "0.3.*"
+nix = "0.10.*"
+ansi_term = "0.11.*"
+
+[target.'cfg(target_os = "freebsd")'.dependencies]
+pmc-rs = "0.1.0"
