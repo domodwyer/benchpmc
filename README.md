@@ -45,7 +45,7 @@ In this example we'll analyse a simple pre-compiled Golang benchmark comparing t
 First we need a general idea of the two algorithm's performance:
 
 ```
-benchpmc ./algorithms.test  -- "-run=^$" "-test.bench=BenchmarkSampleA"`
+benchpmc ./algorithms.test  -- "-run=^$" "-test.bench=BenchmarkSampleA"
 ```
 
 ```
