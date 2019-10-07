@@ -1,6 +1,6 @@
 use error::Error;
-use runner::Counter;
 use event::Printable;
+use runner::Counter;
 use std::fmt::{self, Display};
 
 /// `RelativePrinter` decorates a counter value with a percentage relative to
@@ -12,6 +12,7 @@ use std::fmt::{self, Display};
 ///                unhalted-cycles:  7,002,094,130    ( 36.8% of instructions)
 /// ```
 ///
+#[allow(dead_code)]
 pub struct RelativePrinter<T: Printable + Counter + Display> {
 	absolute: T,
 	relatives: Vec<Box<T>>,
@@ -73,6 +74,7 @@ impl<T> RelativePrinter<T>
 where
 	T: Printable + Counter + Display,
 {
+	#[allow(dead_code)]
 	pub fn new(absolute: T, relatives: Vec<Box<T>>) -> Self {
 		RelativePrinter {
 			absolute,

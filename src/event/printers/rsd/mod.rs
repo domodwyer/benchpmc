@@ -1,6 +1,6 @@
 use error::Error;
-use runner::Counter;
 use event::Printable;
+use runner::Counter;
 use std::fmt::{self, Display};
 
 use separator::Separatable;
@@ -84,6 +84,7 @@ impl<T> RSDPrinter<T>
 where
 	T: Counter + Printable + Display,
 {
+	#[allow(dead_code)]
 	pub fn new(counter: T) -> Self {
 		RSDPrinter {
 			counter,

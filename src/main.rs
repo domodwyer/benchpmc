@@ -6,21 +6,21 @@ extern crate nix;
 extern crate pmc;
 extern crate separator;
 
+mod error;
 mod event;
 mod runner;
-mod error;
 
-#[cfg(target_os = "freebsd")]
-use event::{PmcEvent, RSDPrinter, RelativePrinter};
 #[cfg(all(debug_assertions, not(target_os = "freebsd")))]
 use event::MockEvent;
+#[cfg(target_os = "freebsd")]
+use event::{PmcEvent, RSDPrinter, RelativePrinter};
 
-use std::process;
-use std::fmt::Display;
-use std::time::Instant;
-use runner::Counter;
-use clap::{App, AppSettings, Arg};
 use ansi_term::Colour::Yellow;
+use clap::{App, AppSettings, Arg};
+use runner::Counter;
+use std::fmt::Display;
+use std::process;
+use std::time::Instant;
 
 /// `DisplayCounter` composes the traits required to both run, and display a
 /// counter
@@ -59,7 +59,7 @@ fn main() {
                 .help("Number of times to measure target"),
         )
         // TODO: write samples to an outdir for further processing / graphing
-        // 
+        //
         // .arg(
         //     Arg::with_name("outdir")
         //         .short("o")
@@ -84,7 +84,8 @@ for the Intel Haswell microarchitecture) - try running 'apropos pmc.'
 
 If count is > 1, the average value is printed along with the relative standard 
 deviation for observed counter values. Only per-process events are supported.",
-        ).get_matches();
+        )
+        .get_matches();
 
     let run_count = matchers
         .value_of("count")
@@ -142,8 +143,8 @@ deviation for observed counter values. Only per-process events are supported.",
 
 #[cfg(not(target_os = "freebsd"))]
 fn get_counters<'a>(
-    matchers: &'a clap::ArgMatches<'a>,
-) -> Result<Vec<Box<DisplayCounter + 'a>>, String> {
+    _matchers: &'a clap::ArgMatches<'a>,
+) -> Result<Vec<Box<dyn DisplayCounter + 'a>>, String> {
     Ok(vec![Box::new(MockEvent::new("mock", 42))])
 }
 
@@ -156,15 +157,16 @@ fn get_counters<'a>(
     // Allocate user specified events
     if matchers.is_present("event-spec") {
         for event in matchers.values_of("event-spec").unwrap() {
-            counters.push(Box::new(
-                RSDPrinter::new(PmcEvent::new(event).map_err(|e| format!("{}: {}", event, e))?),
-            ));
+            counters.push(Box::new(RSDPrinter::new(
+                PmcEvent::new(event).map_err(|e| format!("{}: {}", event, e))?,
+            )));
         }
 
         return Ok(counters);
     }
 
-    let instructions = PmcEvent::new("instructions").map_err(|e| format!("initialising counter: {}", e))?;
+    let instructions =
+        PmcEvent::new("instructions").map_err(|e| format!("initialising counter: {}", e))?;
 
     // Otherwise use the defaults
     let defaults = [
