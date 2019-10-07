@@ -1,11 +1,11 @@
-use std::process;
 use std::ffi::{CString, NulError};
 use std::os::unix::io::RawFd;
+use std::process;
 
-use nix::unistd::{close, execvp, fork, read, write, ForkResult, Pid};
-use nix::sys::wait::{waitpid, WaitStatus};
-use nix::sys::socket::{socketpair, AddressFamily, SockFlag, SockType};
 use nix::sys::signal::{kill, Signal};
+use nix::sys::socket::{socketpair, AddressFamily, SockFlag, SockType};
+use nix::sys::wait::{waitpid, WaitStatus};
+use nix::unistd::{close, execvp, fork, read, write, ForkResult, Pid};
 
 /// `BAD_EXEC` is returned when the child fails to execute the target process.
 const BAD_EXEC: i32 = 42;
@@ -57,7 +57,8 @@ impl Exec {
 			SockType::Stream,
 			None,
 			SockFlag::empty(),
-		).unwrap();
+		)
+		.unwrap();
 
 		let mut buf = [0];
 		match fork() {
@@ -131,11 +132,13 @@ mod tests {
 
 	#[test]
 	fn success() {
-		let c = Exec::new("/usr/bin/true")
-			.unwrap()
-			.args(&vec!["test"])
-			.unwrap()
-			.exec();
+		#[cfg(any(target_os = "freebsd", target_os = "macos"))]
+		let path = "/usr/bin/true";
+
+		#[cfg(not(any(target_os = "freebsd", target_os = "macos")))]
+		let path = "/bin/true";
+
+		let c = Exec::new(path).unwrap().args(&["test"]).unwrap().exec();
 
 		assert!(c.pid().is_some());
 		assert_eq!(c.run(), Some(0));
@@ -143,11 +146,13 @@ mod tests {
 
 	#[test]
 	fn bad_exit_status() {
-		let c = Exec::new("/usr/bin/false")
-			.unwrap()
-			.args(&vec!["test"])
-			.unwrap()
-			.exec();
+		#[cfg(any(target_os = "freebsd", target_os = "macos"))]
+		let path = "/usr/bin/false";
+
+		#[cfg(not(any(target_os = "freebsd", target_os = "macos")))]
+		let path = "/bin/false";
+
+		let c = Exec::new(path).unwrap().args(&["test"]).unwrap().exec();
 
 		assert!(c.pid().is_some());
 		assert_eq!(c.run(), Some(1));
@@ -157,7 +162,7 @@ mod tests {
 	fn missing_binary() {
 		let c = Exec::new("not-a-thing")
 			.unwrap()
-			.args(&vec!["test"])
+			.args(&["test"])
 			.unwrap()
 			.exec();
 

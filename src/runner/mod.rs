@@ -57,7 +57,8 @@ impl<'a> Runner<'a> {
 			Some(0) => Ok(()),
 			Some(_) => Err("non-zero exit status"),
 			None => Err("failed to exec"),
-		}.map_err(|e| Error::ExecError(e.to_string()))?;
+		}
+		.map_err(|e| Error::ExecError(e.to_string()))?;
 
 		// Stop all counters and reset them
 		for counter in events.iter_mut() {
@@ -80,7 +81,13 @@ mod tests {
 
 	#[test]
 	fn success() {
-		let mut r = Runner::new("/usr/bin/true");
+		#[cfg(any(target_os = "freebsd", target_os = "macos"))]
+		let path = "/usr/bin/true";
+
+		#[cfg(not(any(target_os = "freebsd", target_os = "macos")))]
+		let path = "/bin/true";
+
+		let mut r = Runner::new(path);
 
 		let mut counters = vec![Box::new(mock_event::new())];
 
@@ -91,7 +98,13 @@ mod tests {
 	fn args() {
 		let args = vec!["one", "two"];
 
-		let r = Runner::new("/usr/bin/true");
+		#[cfg(any(target_os = "freebsd", target_os = "macos"))]
+		let path = "/usr/bin/true";
+
+		#[cfg(not(any(target_os = "freebsd", target_os = "macos")))]
+		let path = "/bin/true";
+
+		let r = Runner::new(path);
 		assert_eq!(r.args, None);
 
 		let r = r.args(&args);
@@ -100,7 +113,13 @@ mod tests {
 
 	#[test]
 	fn bad_return_code() {
-		let mut r = Runner::new("/usr/bin/false");
+		#[cfg(any(target_os = "freebsd", target_os = "macos"))]
+		let path = "/usr/bin/false";
+
+		#[cfg(not(any(target_os = "freebsd", target_os = "macos")))]
+		let path = "/bin/false";
+
+		let mut r = Runner::new(path);
 
 		assert_eq!(
 			r.run(&mut vec![Box::new(mock_event::new())]).unwrap_err(),
@@ -129,7 +148,13 @@ mod tests {
 			Box::new(mock_event::new()),
 		];
 
-		let mut r = Runner::new("/usr/bin/true");
+		#[cfg(any(target_os = "freebsd", target_os = "macos"))]
+		let path = "/usr/bin/true";
+
+		#[cfg(not(any(target_os = "freebsd", target_os = "macos")))]
+		let path = "/bin/true";
+
+		let mut r = Runner::new(path);
 		assert_eq!(r.run(counters), Err(Error::MockError));
 	}
 
@@ -145,7 +170,13 @@ mod tests {
 			Box::new(mock_event::new()),
 		];
 
-		let _ = Runner::new("/usr/bin/true").run(counters);
+		#[cfg(any(target_os = "freebsd", target_os = "macos"))]
+		let path = "/usr/bin/true";
+
+		#[cfg(not(any(target_os = "freebsd", target_os = "macos")))]
+		let path = "/bin/true";
+
+		let _ = Runner::new(path).run(counters);
 	}
 
 	#[test]
@@ -160,7 +191,13 @@ mod tests {
 			Box::new(mock_event::new()),
 		];
 
-		let _ = Runner::new("/usr/bin/true").run(counters);
+		#[cfg(any(target_os = "freebsd", target_os = "macos"))]
+		let path = "/usr/bin/true";
+
+		#[cfg(not(any(target_os = "freebsd", target_os = "macos")))]
+		let path = "/bin/true";
+
+		let _ = Runner::new(path).run(counters);
 	}
 
 	#[test]
@@ -169,7 +206,14 @@ mod tests {
 		err.set_err = Some(Error::MockError);
 
 		let counters = &mut vec![Box::new(err)];
-		let mut r = Runner::new("/usr/bin/true");
+
+		#[cfg(any(target_os = "freebsd", target_os = "macos"))]
+		let path = "/usr/bin/true";
+
+		#[cfg(not(any(target_os = "freebsd", target_os = "macos")))]
+		let path = "/bin/true";
+
+		let mut r = Runner::new(path);
 
 		assert_eq!(r.run(counters), Err(Error::MockError));
 		assert_eq!(counters[0].value, Some(0));
@@ -181,7 +225,14 @@ mod tests {
 		mock.set_ret = Some(42);
 
 		let counters = &mut vec![Box::new(mock)];
-		let mut r = Runner::new("/usr/bin/true");
+
+		#[cfg(any(target_os = "freebsd", target_os = "macos"))]
+		let path = "/usr/bin/true";
+
+		#[cfg(not(any(target_os = "freebsd", target_os = "macos")))]
+		let path = "/bin/true";
+
+		let mut r = Runner::new(path);
 
 		assert!(r.run(counters).is_ok());
 		assert_eq!(counters[0].value, Some(0));
