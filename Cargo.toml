@@ -16,7 +16,7 @@ categories = ["command-line-utilities"]
 [dependencies]
 clap = "2.31.*"
 separator = "0.3.*"
-nix = "0.10.*"
+nix = "0.15.*"
 ansi_term = "0.12.*"
 
 [target.'cfg(target_os = "freebsd")'.dependencies]
