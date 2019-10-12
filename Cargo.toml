@@ -15,7 +15,7 @@ categories = ["command-line-utilities"]
 
 [dependencies]
 clap = "2.31.*"
-separator = "0.3.*"
+separator = "0.4.*"
 nix = "0.15.*"
 ansi_term = "0.12.*"
 
