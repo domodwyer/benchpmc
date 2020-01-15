@@ -149,3 +149,7 @@ PMCs are crazy powerful right?
 Either download a binary from the releases page, or compile your own with `cargo build`. Obviously a FreeBSD box is needed as it makes use of the `hwpmc` kernel module.
 
 I don't expect this to be outstandingly popular (talk about a niche market...) but if it was useful or you have questions, feel free to drop me an email!
+
+------
+
+Much has changed since this was wrote (hello `dyn`), including my understanding of Rust! I leave it here as a working tool, but you shouldn't consider it idiomatic code :)
