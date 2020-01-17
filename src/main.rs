@@ -129,7 +129,7 @@ deviation for observed counter values. Only per-process events are supported.",
         }
 
         let diff = start.elapsed();
-        let ms = (diff.as_secs() * 1000) + u64::from(diff.subsec_nanos() / 1_000_000);
+        let ms = (diff.as_secs() * 1000) + u64::from(diff.subsec_millis());
 
         let progress = Yellow.paint(format!("[{}/{}]", i + 1, run_count));
         println!("{}{}\truntime: {}ms", prompt, progress, ms);
