@@ -69,13 +69,18 @@ impl Exec {
 			Ok(ForkResult::Child) => {
 				let _ = close(parent_sock);
 
+				let mut args = Vec::new();
+				for arg in self.args.iter() {
+					args.push(arg.as_c_str());
+				}
+
 				// Wait for the "start" signal and go
 				let _ = read(child_sock, &mut buf);
 				let _ = close(child_sock);
-				let _ = execvp(&self.target, &self.args);
+				let _ = execvp(&self.target, &args);
 				process::exit(BAD_EXEC);
 			}
-			Err(_) => panic!("fork failed"),
+			Err(_) => unreachable!("fork failed"),
 		};
 
 		c
@@ -92,11 +97,7 @@ impl Exec {
 
 impl Child {
 	pub fn pid(&self) -> Option<u32> {
-		// Horrible hack to get the raw pid out - nix::unistd::Pid is a
-		// tuple with a private field containing the libc::pid_t with no
-		// accessors.
-		self.pid
-			.map(|pid| format!("{}", pid).parse::<u32>().unwrap())
+		self.pid.map(|pid| pid.as_raw() as u32)
 	}
 
 	pub fn run(self) -> Option<i32> {
