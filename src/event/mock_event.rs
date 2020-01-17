@@ -5,8 +5,8 @@ use error::Error;
 use event::Printable;
 use runner::Counter;
 
-use std::fmt;
 use separator::Separatable;
+use std::fmt;
 
 pub struct MockEvent<'a> {
 	name: &'a str,

@@ -4,10 +4,10 @@ extern crate pmc;
 
 use event::Printable;
 
-use std::fmt;
 use error::Error;
 use runner::Counter;
 use separator::Separatable;
+use std::fmt;
 
 #[derive(Debug)]
 /// `PmcEvent` interfaces with a [`Counter`] in [`pmc-rs`], and provides output

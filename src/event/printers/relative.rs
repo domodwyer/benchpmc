@@ -15,7 +15,7 @@ use std::fmt::{self, Display};
 #[allow(dead_code)]
 pub struct RelativePrinter<T: Printable + Counter + Display> {
 	absolute: T,
-	relatives: Vec<Box<T>>,
+	relatives: Vec<T>,
 }
 
 impl<T> fmt::Display for RelativePrinter<T>
@@ -75,7 +75,7 @@ where
 	T: Printable + Counter + Display,
 {
 	#[allow(dead_code)]
-	pub fn new(absolute: T, relatives: Vec<Box<T>>) -> Self {
+	pub fn new(absolute: T, relatives: Vec<T>) -> Self {
 		RelativePrinter {
 			absolute,
 			relatives,
