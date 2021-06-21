@@ -162,9 +162,9 @@ dependencies = [
 
 [[package]]
 name = "lazy_static"
-version = "1.0.0"
+version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c8f31047daa365f19be14b47c29df4f7c3b581832407daabe6ae77397619237d"
+checksum = "e2abad23fbc42b3700f2f279844dc832adb2b2eb069b2df918f455c4e18cc646"
 
 [[package]]
 name = "lazycell"
@@ -239,9 +239,9 @@ checksum = "19b17cddbe7ec3f8bc800887bab5e717348c95ea2ca0b1bf0837fb964dc67099"
 
 [[package]]
 name = "pmc-rs"
-version = "0.1.1"
+version = "0.2.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "68a1ab8c488da3686d1aa8624fd4bb940183b02fa1fa446e01d20cbefff0b071"
+checksum = "ea9a1242fe6e07cdc5de94c01d880fc102de91c3da95aa228573a7816cab3b6c"
 dependencies = [
  "lazy_static",
  "libc",
@@ -250,9 +250,9 @@ dependencies = [
 
 [[package]]
 name = "pmc-sys"
-version = "0.1.1"
+version = "0.1.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "af6da43f3d0a676db2802e23b3aee9254423570bd6f1065dbff624c4db0f616b"
+checksum = "186384650cfee586e9a3ed4b5be1abcc5b905c23cf1ef14a678977074eb75182"
 dependencies = [
  "bindgen",
  "libc",
