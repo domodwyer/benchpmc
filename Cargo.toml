@@ -14,7 +14,7 @@ Black box benchmark runner for CPU micro-architecture events using Performance M
 categories = ["command-line-utilities"]
 
 [dependencies]
-clap = "2.33.*"
+clap = "2.34.*"
 separator = "0.4.*"
 nix = "0.18.*"
 ansi_term = "0.12.*"
