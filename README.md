@@ -8,7 +8,7 @@ deviation](https://en.wikipedia.org/wiki/Coefficient_of_variation) of the
 configured counters. It looks exactly like this:
 
 <p align="center">
-<img src="https://s3-eu-west-1.amazonaws.com/iab-assets/benchpmc.png" />
+<img src="https://assets.itsallbroken.com/github/benchpmc.png" />
 </p>
 
 Users can specify different PMCs to measure, though they must be capable of per-process operation (some are system-scope only). 
